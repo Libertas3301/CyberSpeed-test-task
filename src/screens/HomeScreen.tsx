@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {
   TextInput,
   Button,
@@ -8,6 +8,7 @@ import {
   Paragraph,
   List,
 } from 'react-native-paper';
+import {styled} from 'styled-components/native';
 
 const HomeScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,35 +33,53 @@ const HomeScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        label="Search for a movie"
-        value={searchQuery}
-        onChangeText={text => setSearchQuery(text)}
-        style={styles.input}
-      />
-      <Button mode="contained" onPress={handleSearch} style={styles.button}>
-        Search
-      </Button>
+    <SafeArea style={styles.container}>
+      <Wrapper>
+        <Input
+          label="Search for a movie"
+          value={searchQuery}
+          onChangeText={text => setSearchQuery(text)}
+          style={styles.input}
+        />
+        <Bttn mode="contained" onPress={handleSearch} style={styles.button}>
+          Search
+        </Bttn>
 
-      {movies?.length > 0 && (
-        <View style={styles.moviesContainer}>
-          <Title>Recommended Movies</Title>
-          <List.Section>
-            {movies.map((movie, index) => (
-              <Card key={index} style={styles.movieCard}>
-                <Card.Content>
-                  <Title>{movie.title}</Title>
-                  <Paragraph>{movie.overview}</Paragraph>
-                </Card.Content>
-              </Card>
-            ))}
-          </List.Section>
-        </View>
-      )}
-    </SafeAreaView>
+        {movies?.length > 0 && (
+          <View style={styles.moviesContainer}>
+            <Title>Recommended Movies</Title>
+            <List.Section>
+              {movies.map((movie, index) => (
+                <Card key={index} style={styles.movieCard}>
+                  <Card.Content>
+                    <Title>{movie.title}</Title>
+                    <Paragraph>{movie.overview}</Paragraph>
+                  </Card.Content>
+                </Card>
+              ))}
+            </List.Section>
+          </View>
+        )}
+      </Wrapper>
+    </SafeArea>
   );
 };
+
+const SafeArea = styled.SafeAreaView`
+  flex: 1;
+`;
+
+const Wrapper = styled.View`
+  padding: 10px;
+`;
+
+const Input = styled(TextInput)`
+  background: #fff;
+`;
+
+const Bttn = styled(Button)`
+  background: ${({theme}) => theme?.colors?.primaryBackground};
+`;
 
 const styles = StyleSheet.create({
   container: {

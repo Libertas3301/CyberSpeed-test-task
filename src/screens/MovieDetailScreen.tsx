@@ -1,7 +1,8 @@
 import React from 'react';
+import {Text} from 'react-native-paper';
 
 function MovieDetailScreen() {
-  return <div>MovieDetailScreen</div>;
+  return <Text>MovieDetailScreen</Text>;
 }
 
 export default MovieDetailScreen;

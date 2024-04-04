@@ -1,7 +1,8 @@
 import React from 'react';
+import {Text} from 'react-native-paper';
 
 function SplashScreen() {
-  return <div>SplashScreen</div>;
+  return <Text>SplashScreen</Text>;
 }
 
 export default SplashScreen;
