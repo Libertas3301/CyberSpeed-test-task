@@ -1,8 +1,11 @@
 import React, {useEffect} from 'react';
-import {Title, Caption, Button} from 'react-native-paper';
+import {Title, Button} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 import {getMovieDetails} from '../store/actions/movieActions';
+import {ScrollView} from 'react-native-gesture-handler';
+import Loading from '../components/Loading';
+import Error from '../components/Error';
 
 const MovieDetailScreen = ({route}) => {
   const dispatch = useDispatch();
@@ -12,59 +15,85 @@ const MovieDetailScreen = ({route}) => {
     dispatch(getMovieDetails(route.params.id));
   }, []);
 
-  console.log('id');
-  console.log(selectedMovie);
-  console.log(loading);
-  console.log(error);
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
-    <Container>
-      {/* <Poster source={{uri: data['#IMG_POSTER']}} />
-      <MovieTitle>{data['#TITLE']}</MovieTitle>
-      <MovieCaption>{data['#YEAR']}</MovieCaption>
-      <MovieCaption>{data['#ACTORS']}</MovieCaption>
-      <MovieCaption>{data['#AKA']}</MovieCaption>
-      <MoreInfoButton
-        icon="information"
-        mode="contained"
-        onPress={() => {
-          console.log(data['#IMDB_URL']);
-        }}>
-        More Info
-      </MoreInfoButton> */}
-    </Container>
+    <SafeArea>
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView>
+          <Container>
+            <Poster source={{uri: selectedMovie?.fake['#IMG_POSTER']}} />
+            <InfoContainer>
+              <Title>
+                {selectedMovie?.fake['#TITLE']} ({selectedMovie?.fake['#YEAR']})
+              </Title>
+              <Subtitle>Also known as: {selectedMovie?.fake['#AKA']}</Subtitle>
+              <Subtitle>Actors: {selectedMovie?.fake['#ACTORS']}</Subtitle>
+              <Description>{selectedMovie?.short['description']}</Description>
+
+              <Wrapper>
+                <Submit
+                  mode="contained"
+                  onPress={() => console.log('Navigate to IMDb')}>
+                  View on IMDb
+                </Submit>
+                <Submit
+                  mode="outlined"
+                  onPress={() => console.log('Watch Trailer')}>
+                  Watch Trailer
+                </Submit>
+              </Wrapper>
+            </InfoContainer>
+          </Container>
+        </ScrollView>
+      )}
+    </SafeArea>
   );
 };
 
 export default MovieDetailScreen;
+const SafeArea = styled.SafeAreaView`
+  background-color: #fff;
+  height: 100%;
+`;
 
 const Container = styled.View`
   flex: 1;
-  align-items: center;
-  justify-content: center;
   padding: 20px;
+  background-color: #fff;
+  height: 100%;
+  flex: 1;
+`;
+
+const InfoContainer = styled.View`
+  margin-top: 20px;
+  flex-direction: column;
+  gap: 6px;
 `;
 
 const Poster = styled.Image`
   width: 100%;
-  height: 300px;
-  margin-bottom: 20px;
-  resize-mode: cover;
+  height: 400px;
+  resizemode: cover;
+  border-radius: 30px;
 `;
 
-const MovieTitle = styled(Title)`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-align: center;
+const Subtitle = styled.Text`
+  font-size: 18px;
+  margin-bottom: 5px;
 `;
 
-const MovieCaption = styled(Caption)`
+const Description = styled.Text`
   font-size: 16px;
   margin-bottom: 5px;
-  text-align: center;
 `;
 
-const MoreInfoButton = styled(Button)`
-  margin-top: 20px;
+const Submit = styled(Button)`
+  margin: 5px 0;
 `;
+
+const Wrapper = styled.View``;
