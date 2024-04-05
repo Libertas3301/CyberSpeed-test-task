@@ -1,64 +1,75 @@
-import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {
-  TextInput,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  List,
-} from 'react-native-paper';
+import React, {useCallback, useState} from 'react';
+import {Divider} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
 import {styled} from 'styled-components/native';
+import MovieList from '../components/MovieList';
+import MovieStories from '../components/MovieStories';
+import Loading from '../components/Loading';
+import Error from '../components/Error';
+import Search from '../components/Search';
+import {searchMovies} from '../store/actions/movieActions';
 
 const HomeScreen = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [movies, setMovies] = useState([]);
+  const dispatch = useDispatch();
 
-  const handleSearch = async () => {
-    const dummyData = [
-      {
-        title: 'Movie 1',
-        overview: 'This is a movie about something interesting.',
-      },
-      {
-        title: 'Movie 2',
-        overview: 'This is another movie with a captivating plot.',
-      },
-      {
-        title: 'Movie 3',
-        overview: 'A third movie that will keep you at the edge of your seat.',
-      },
-    ];
-    setMovies(dummyData);
+  const {randomMovies, movies, loading, error} = useSelector(
+    state => state.movie,
+  );
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = useCallback(async () => {
+    dispatch(searchMovies(searchQuery));
+  }, [searchQuery]);
+
+  const updateSearchQuery = async (e: string) => {
+    setSearchQuery(e);
   };
 
-  return (
-    <SafeArea style={styles.container}>
-      <Wrapper>
-        <Input
-          label="Search for a movie"
-          value={searchQuery}
-          onChangeText={text => setSearchQuery(text)}
-          style={styles.input}
-        />
-        <Bttn mode="contained" onPress={handleSearch} style={styles.button}>
-          Search
-        </Bttn>
+  if (error) {
+    return <Error error={error} />;
+  }
 
-        {movies?.length > 0 && (
-          <View style={styles.moviesContainer}>
-            <Title>Recommended Movies</Title>
-            <List.Section>
-              {movies.map((movie, index) => (
-                <Card key={index} style={styles.movieCard}>
-                  <Card.Content>
-                    <Title>{movie.title}</Title>
-                    <Paragraph>{movie.overview}</Paragraph>
-                  </Card.Content>
-                </Card>
-              ))}
-            </List.Section>
-          </View>
+  return (
+    <SafeArea>
+      <Wrapper>
+        <Search
+          updateSearchQuery={updateSearchQuery}
+          handleSearch={handleSearch}
+          searchQuery={searchQuery}
+        />
+
+        <Divider style={{marginBottom: 10}} />
+
+        <Heading>Movie Stories</Heading>
+
+        {randomMovies.description?.length > 0 && (
+          <MovieStories data={randomMovies.description} />
+        )}
+
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            {movies.description && (
+              <>
+                <Heading>Movies for {searchQuery}</Heading>
+
+                {movies.description?.length > 0 && (
+                  <MovieList data={movies.description} />
+                )}
+              </>
+            )}
+
+            {!movies.description && (
+              <>
+                <Heading>Recomended Movies</Heading>
+
+                {randomMovies.description?.length > 0 && (
+                  <MovieList data={randomMovies.description} />
+                )}
+              </>
+            )}
+          </>
         )}
       </Wrapper>
     </SafeArea>
@@ -67,38 +78,20 @@ const HomeScreen = () => {
 
 const SafeArea = styled.SafeAreaView`
   flex: 1;
+  background: black;
 `;
 
 const Wrapper = styled.View`
   padding: 10px;
+  background: black;
+  height: 100%;
 `;
 
-const Input = styled(TextInput)`
-  background: #fff;
+const Heading = styled.Text`
+  color: ${({theme}) => theme.colors.accentYellow};
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
 `;
-
-const Bttn = styled(Button)`
-  background: ${({theme}) => theme?.colors?.primaryBackground};
-`;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  input: {
-    marginBottom: 10,
-  },
-  button: {
-    marginBottom: 20,
-  },
-  moviesContainer: {
-    flex: 1,
-  },
-  movieCard: {
-    marginBottom: 10,
-  },
-});
 
 export default HomeScreen;

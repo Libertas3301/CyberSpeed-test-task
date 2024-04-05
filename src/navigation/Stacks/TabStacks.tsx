@@ -13,7 +13,6 @@ const TabStack = () => {
       screenOptions={{headerShown: false}}
       tabBar={props => <TabBar {...props} />}>
       <BottomTab.Screen name={'homeStack'} component={HomeStack} />
-
       <BottomTab.Screen name={'profileStack'} component={ProfileStack} />
     </BottomTab.Navigator>
   );

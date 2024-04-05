@@ -12,10 +12,26 @@ const ProfileScreen = () => {
       <View style={{paddingHorizontal: 16, paddingTop: 16}}>
         <List.Section>
           <List.Subheader>App Information</List.Subheader>
-          <List.Item title="App Version" description="1.0.0" />
-          <List.Item title="Last Updated" description="April 5, 2024" />
-          <List.Item title="Author" description="Vicol Constantin" />
-          <List.Item title="Work time" description="3h" />
+          <List.Item
+            title="App Version"
+            description="1.0.0"
+            left={props => <List.Icon {...props} icon="folder" />}
+          />
+          <List.Item
+            title="Last Updated"
+            description="April 5, 2024"
+            left={props => <List.Icon {...props} icon="calendar" />}
+          />
+          <List.Item
+            title="Author"
+            description="Vicol Constantin"
+            left={props => <List.Icon {...props} icon="calendar" />}
+          />
+          <List.Item
+            title="Work time"
+            description="3h"
+            left={props => <List.Icon {...props} icon="calendar" />}
+          />
         </List.Section>
       </View>
     </View>

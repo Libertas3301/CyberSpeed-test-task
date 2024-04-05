@@ -1,10 +1,8 @@
 import {combineReducers} from 'redux';
-import dataReducer from './dataReducer';
-import otherReducer from './otherReducer';
+import movieReducer from './movieReducer';
 
 const rootReducer = combineReducers({
-  data: dataReducer,
-  other: otherReducer,
+  movies: movieReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

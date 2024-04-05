@@ -1,11 +1,10 @@
-import {configureStore, Action} from '@reduxjs/toolkit';
-import thunk, {ThunkMiddleware} from 'redux-thunk';
-import rootReducer, {RootState} from './reducers/rootReducer';
+import {configureStore} from '@reduxjs/toolkit';
+import movieReducer from './reducers/movieReducer';
 
 const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().prepend(thunk as ThunkMiddleware<RootState, Action>),
+  reducer: {
+    movie: movieReducer,
+  },
 });
 
 export default store;

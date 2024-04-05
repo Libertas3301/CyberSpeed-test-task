@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
-// import {Ionicons} from '@expo/vector-icons'; // Assuming you're using Ionicons for icons
 
 const TabBar = ({state, descriptors, navigation}) => {
   return (

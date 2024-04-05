@@ -17,12 +17,12 @@ class MovieSDK {
     this.baseUrl = baseUrl;
   }
 
-  async fetchRandomMovies(count: number): Promise<Movie[]> {
+  async fetchRandomMovies(count: number, q: string): Promise<Movie[]> {
     try {
       const response: AxiosResponse<Movie[]> = await axios.get(
-        `${this.baseUrl}/movies/random`,
+        `${this.baseUrl}`,
         {
-          params: {count},
+          params: {count, q},
         },
       );
       return response.data;
@@ -32,12 +32,12 @@ class MovieSDK {
     }
   }
 
-  async searchMovies(query: string): Promise<Movie[]> {
+  async searchMovies(q: string): Promise<Movie[]> {
     try {
       const response: AxiosResponse<Movie[]> = await axios.get(
-        `${this.baseUrl}/movies/search`,
+        `${this.baseUrl}`,
         {
-          params: {query},
+          params: {q},
         },
       );
       return response.data;
@@ -50,7 +50,7 @@ class MovieSDK {
   async getMovieDetails(id: string): Promise<Movie | null> {
     try {
       const response: AxiosResponse<Movie> = await axios.get(
-        `${this.baseUrl}/movies/${id}`,
+        `${this.baseUrl}?tt=${id}`,
       );
       return response.data;
     } catch (error) {

@@ -13,7 +13,7 @@ const AppNavigation = () => {
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{headerShown: false}}
-        initialRouteName={'tabStack'}>
+        initialRouteName={'splashScreen'}>
         <Stack.Screen name="splashScreen" component={SplashScreen} />
         <Stack.Screen name="tabStack" component={TabStack} />
         <Stack.Screen name="home" component={Home} />
